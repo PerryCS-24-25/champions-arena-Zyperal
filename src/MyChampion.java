@@ -8,8 +8,8 @@ public class MyChampion extends Champion {
     public static final String NAME = "My Champion";
 
     public MyChampion() {
-        // Create a champion with an attack of 5, a defense of 5, and max health of 40
-        super("Patron Librarian: Roland", 5, 5, 40);
+        // Create a champion with an attack of 5, a defense of 5, and max health of 106 omg budget roland lmao
+        super("Patron Librarian: Roland", 5, 5, 106);
     }
 
     @Override

@@ -9,13 +9,18 @@ public class MyChampion extends Champion {
 
     public MyChampion() {
         // Create a champion with an attack of 5, a defense of 5, and max health of 40
-        super("My Champion", 5, 5, 40);
+        super("Patron Librarian: Roland", 5, 5, 40);
     }
 
     @Override
     public List<Action> getActions() {
         List<Action> actions = new ArrayList<>(super.getActions());
-        actions.add(new Jab()); // Replace with your custom actions
+        // actions.add(new Durandal()); // Replace with your custom actions
+        // actions.add(new Mook());
+        // actions.add(new Ragna());
+        // actions.add(new Zelkova());
+        // actions.add(new Allas());
+        // actions.add(new Wheels());
         return actions;
     }
 }

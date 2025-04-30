@@ -5,10 +5,11 @@
       "type": "java",
       "name": "Run Champions Arena",
       "request": "launch",
-      "mainClass": "ChampionsArena",
+      "mainClass": "Launcher",
+      "cwd": "${workspaceFolder}/dist",
       "classPaths": [
-        "champions-arena.jar",
-        "dist"
+        "${workspaceFolder}/dist",
+        "${workspaceFolder}/champions-arena.jar"
       ]
     }
   ]

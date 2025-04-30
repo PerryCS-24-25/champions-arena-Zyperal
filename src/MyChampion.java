@@ -74,7 +74,7 @@ class Mook extends Action {
     }
 
     /**
-     * Executes the Durandal action.
+     * Executes the Mook action.
      * This action deals 8-15 damage +3 dmg to the opponent
      * @param context The context of the battle, including the wielder and enemy.
      */

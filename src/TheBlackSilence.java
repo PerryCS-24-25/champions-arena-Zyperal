@@ -5,7 +5,7 @@ import java.util.List;
  */
 public class TheBlackSilence extends Champion {
     public static final String NAME = "TheBlackSilence";
-    public int moveCounter = 0;
+    public static int moveCounter = 0;
     public TheBlackSilence() {
         // Create a champion with an attack of 5, a defense of 5, and max health of 106 omg budget roland lmao
         super("Patron Librarian: Roland", 5, 5, 106);
@@ -212,7 +212,6 @@ class Wheels extends Action {
             context.round, BattleLog.EntryType.ACTION
         );
         moveCounter = moveCounter + 1;
-        context.wielder.getLoadout().addTemporaryModifier(new FreeDef());
 
     }
 }
@@ -240,7 +239,6 @@ class CrystalAtelier extends Action {
             context.round, BattleLog.EntryType.ACTION
         );
         moveCounter = moveCounter + 1;
-        context.wielder.getLoadout().addTemporaryModifier(new CrystalFreeDef());
 
     }
 }
@@ -267,7 +265,6 @@ class AtelierLogic extends Action {
             context.wielder.getName() + " Blasts for " + actualDamage + " damage!",
             context.round, BattleLog.EntryType.ACTION
         );
-        context.wielder.getLoadout().addTemporaryModifier(new CrystalFreeDef());
         moveCounter = moveCounter + 1;
 
     }
@@ -293,83 +290,49 @@ class OldBoys extends Action {
             context.wielder.getName() + " Smashes for " + actualDamage + " damage!",
             context.round, BattleLog.EntryType.ACTION
         );
-        context.wielder.getLoadout().addTemporaryModifier(new OldBoysFreeDef());
         moveCounter = moveCounter + 1;
 
     }
 }
 
-public class Furioso extends Gambit {
-    public Furioso() {
-        super("Furioso", "Trigger Condition: Only usable every 9 actions not including this attack. Inflicts 5 Bleed and 20-39 dmg to the target.", 1);
+
+class TriggerFurioso extends Action {
+    public TriggerFurioso() {
+        super("TriggerFurioso");
     }
 
     @Override
-    public void activate(BattleContext context) {
-        if(moveCounter % 9 == 0 ) {
-            super.activate(context);
-            final int dmgInst1 = (int) (Math.random() * (39 - 20 + 1)) + 20;
-            context.wielder.getLoadout().addTemporaryModifier(new BleedEffect());
-            context.wielder.getLoadout().addTemporaryModifier(new BleedEffect());
-            context.wielder.getLoadout().addTemporaryModifier(new BleedEffect());
-            context.wielder.getLoadout().addTemporaryModifier(new BleedEffect());
-            context.wielder.getLoadout().addTemporaryModifier(new BleedEffect());
+    public void execute(BattleContext context) {
+        Loadout loadout = context.wielder.getLoadout();
+        Gambit pocketed = loadout.getPocketedGambit();
+
+        if (pocketed == null) {
             context.getLog().addEntry(
-            context.wielder, context.enemy, getName(),
-            context.wielder.getName() + " Slashes, Punches, Smashes, Pierces, and Blasts for " + dmgInst1 + " damage!",
-            context.round, BattleLog.EntryType.ACTION
-        );
+                context.wielder, null, getName(),
+                context.wielder.getName() + " tries to play a Gambit... but none is ready!",
+                context.round, BattleLog.EntryType.INFO
+            );
+            return;
+        }
+
+        if(moveCounter % 9 == 0) {
+        pocketed.activate(context);
+        loadout.swapPocketedGambit(null); // remove it from pocket
         }
         else {
-            final int dmgInst1 = 0;
             context.getLog().addEntry(
-            context.wielder, context.enemy, getName(),
-            context.wielder.getName() + " Slashes, Punches, Smashes, Pierces, and Blasts for " + dmgInst1 + " damage!",
-            context.round, BattleLog.EntryType.ACTION);
+                context.wielder, null, getName(),
+                context.wielder.getName() + " tries to play a Gambit... but none is ready!",
+                context.round, BattleLog.EntryType.INFO);
+                return;
         }
-    }
-}
 
-/**
- * A temporary modifier that adds +5-8 def permanantly (kinda).
- */
-class FreeDef extends TemporaryModifier {
-    public FreeDef() {
-        super("Free Def", "Adds +5-8 defense Permanantly.", 15);
+        context.getLog().addEntry(
+            context.wielder, null, pocketed.getName(),
+            context.wielder.getName() + " activates the Gambit: " + pocketed.getName() + "!",
+            context.round, BattleLog.EntryType.MODIFIER
+        );
     }
 
-    @Override
-    public int modifyDefense(int baseDefense, BattleContext context) {
-        return baseDefense + (int) (Math.random() * (8 - 5 + 1)) + 5;
     }
-}
-
-/**
- * A temporary modifier that adds +8-11 def permanantly (kinda).
- */
-class CrystalFreeDef extends TemporaryModifier {
-    public CrystalFreeDef() {
-        super("Free Def (Crystal Atelier)", "Adds +8-11 defense Permanantly.", 15);
-    }
-
-    @Override
-    public int modifyDefense(int baseDefense, BattleContext context) {
-        return baseDefense + (int) (Math.random() * (11 - 8 + 1)) + 8;
-    }
-}
-
-/**
- * A temporary modifier that adds +5-9 def permanantly (kinda).
- */
-class OldBoysFreeDef extends TemporaryModifier {
-    public OldBoysFreeDef() {
-        super("Free Def (Old Boys)", "Adds +5-9 defense Permanantly.", 15);
-    }
-
-    @Override
-    public int modifyDefense(int baseDefense, BattleContext context) {
-        return baseDefense + (int) (Math.random() * (9 - 5 + 1)) + 5;
-    }
-}
-
 }

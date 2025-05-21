@@ -8,7 +8,7 @@ public class TheBlackSilence extends Champion {
     public static int moveCounter = 0;
     public TheBlackSilence() {
         // Create a champion with an attack of 5, a defense of 5, and max health of 106 omg budget roland lmao
-        super("Patron Librarian: Roland", 5, 5, 106);
+        super("Patron Librarian: Roland", 5, 5, 100);
     }
 
     @Override
